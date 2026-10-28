@@ -1,0 +1,65 @@
+/* Fill the available tablet viewport rather than shrinking into a 16:9 letterbox. */
+@media(max-width:1100px),(pointer:coarse){
+  html,body{overflow:auto;min-height:100%;height:auto}
+  #stage{width:100vw;height:100dvh;min-height:460px}
+  .game-top{height:52px;font-size:16px;gap:12px;padding:4px 12px}
+  .icon{width:44px;height:44px;min-height:44px;font-size:24px;flex:none}
+  #progress{font-size:14px}
+  .situation{height:auto;min-height:90px;padding:10px 16px}
+  .situation>span{font-size:14px;line-height:1.5}
+  .situation h2{font-size:clamp(18px,2.6vw,28px);margin:6px 0}
+  .chart-name{font-size:clamp(17px,2.4vw,26px);padding:12px 8px}
+  .quiet{font-size:16px;padding:10px 18px;min-height:44px}
+  .start{font-size:clamp(20px,3.4vw,34px);min-height:52px}
+  .result-actions button,.compare .result-actions button{font-size:16px;min-height:44px;padding:10px 16px}
+  .comparison{grid-template-columns:repeat(2,minmax(0,1fr));height:auto;gap:12px;align-items:stretch}
+  .result.compare{overflow:auto;justify-content:flex-start;gap:12px;padding:16px 8px;display:block}
+  .comparison{margin:14px auto}
+  .candidate{min-height:300px}
+  .candidate h3{font-size:18px;margin:10px 0}
+  .candidate .chart{height:180px;min-height:180px;max-height:none;padding:8px}
+  .candidate p{font-size:14px;line-height:1.6;padding:0 10px;margin:8px 0 12px;min-height:0}
+  .badges{height:auto;min-height:32px;flex-wrap:wrap;gap:4px;padding:4px}
+  .badge{font-size:12px;padding:4px 7px}
+  .candidate .cloud span{font-size:clamp(10px,calc(var(--word-size) * .48cqw),30px)!important}
+  .candidate .pict{font-size:12px}
+  .candidate .pict-label{width:48px}
+  .candidate .pict-row{margin:3px 0;gap:4px}
+  .candidate .picture-symbol,.candidate .pict.dense .picture-symbol{width:11px;height:13px}
+  .candidate .picture-ghost,.candidate .picture-fill,.candidate .pict.dense .picture-ghost,.candidate .pict.dense .picture-fill{font-size:11px}
+  .candidate .pict.dense .pict-row{margin:2px 0}
+  .my-reason,.compare-note{font-size:14px;line-height:1.6;max-height:none;margin:12px auto}
+  .compare-title{font-size:22px!important;line-height:1.4}
+  .reason-layout{height:auto;min-height:100%;gap:20px;padding:16px 0}
+  .reason-layout .reason-screen h2{font-size:24px}
+  .reason-layout .reason-screen .chapter,.reason-layout .reason-screen label{font-size:16px}
+  .reason-layout .reason-screen textarea{font-size:16px;min-height:110px}
+  .reason-layout .reason-screen .start{font-size:18px}
+  .reason-error{font-size:14px;height:auto;min-height:24px}
+  .result:not(.compare){overflow:auto;justify-content:flex-start}
+  .rotate{display:none}
+}
+@media(max-aspect-ratio:6/5) and (max-width:1100px){
+  #stage{min-height:720px}
+  .home-copy{left:7%;top:15%;width:86%}
+  .home h1{font-size:8cqw}.home h1 span{font-size:10cqw}
+  .subtitle{font-size:3.4cqw;line-height:1.5}.chapter{font-size:3cqw}
+  .home-actions{left:8%;width:84%;bottom:12%;gap:18px}
+  .intro{padding:24px}.intro h2{font-size:28px;margin:12px 0 28px}
+  .instructions{width:100%;gap:10px}.instructions>div{width:33.33%;padding:18px 4px}
+  .instructions b{font-size:24px}.instructions p{font-size:16px}
+  .intro-note{font-size:16px;margin:24px 0}.intro .start{font-size:20px}
+  .cards{grid-template-columns:1fr;grid-template-rows:1fr 1fr;gap:16px;padding:0 16px 16px}
+  .cards::after{top:50%;font-size:30px}
+  .choice{min-height:0}.chart{padding:10px 16px}
+  .chart-name{padding:8px;font-size:19px}
+  .pict{font-size:14px}.pict-label{width:70px}
+  .pict-row,.pict.dense .pict-row{margin:3px 0;gap:7px}
+  .picture-symbol,.pict.dense .picture-symbol{width:15px;height:17px}
+  .picture-ghost,.picture-fill,.pict.dense .picture-ghost,.pict.dense .picture-fill{font-size:15px}
+  .reason-layout{grid-template-columns:1fr;align-items:start}
+  .reason-preview{height:320px}.reason-screen{padding-bottom:20px}
+  .reason-layout .reason-screen textarea{height:120px}
+  .result-actions{flex-wrap:wrap;justify-content:center}
+}
+body.tablet-expanded{overflow:hidden}body.tablet-expanded #stage{position:fixed;inset:0;z-index:100;width:100vw;height:100dvh;min-height:0}

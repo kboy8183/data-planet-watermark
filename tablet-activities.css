@@ -1,0 +1,9 @@
+/* Shared touch controls for the embedded activities. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,a,input,textarea,summary{-webkit-tap-highlight-color:transparent}
+button,a,summary{touch-action:manipulation}
+@media(max-width:1100px),(pointer:coarse){
+  button,input:not([type=checkbox]),summary{min-height:44px}
+  textarea,input{font-size:16px}
+  dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;-webkit-overflow-scrolling:touch}
+}
