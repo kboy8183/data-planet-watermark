@@ -59,3 +59,19 @@
 .control-deck .control-group button{min-width:64px;min-height:48px;touch-action:none}
 .control-deck .control-group button small{display:block;font-size:13px;line-height:1.25;white-space:nowrap}
 .control-deck .drop{min-height:48px;touch-action:manipulation}
+
+@media(min-width:1101px){
+ .arcade{height:100vh;min-height:0;max-height:100vh;padding:12px 28px;display:grid;grid-template-rows:46px minmax(0,1fr) 62px 20px;gap:10px}
+ .arcade header{margin:0}
+ .arcade .game-layout{min-height:0;height:100%;align-items:stretch}
+ .arcade .well{min-height:0;display:grid;grid-template-rows:36px minmax(0,1fr) 40px;gap:6px;padding:10px}
+ .arcade .well-title{padding:0}
+ .arcade .board{height:100%;min-height:0;aspect-ratio:auto}
+ .arcade .choose{margin:0}
+ .arcade .dashboard{min-height:0;overflow:hidden}
+ .arcade .control-deck{margin:0;display:flex;justify-content:center;align-items:center;gap:16px}
+ .arcade .control-group{display:flex;gap:10px}
+ .arcade .control-group button{width:92px;height:54px}
+ .arcade .control-deck .drop{height:54px;font-size:20px}
+ .arcade .key-guide{margin:0}
+}
