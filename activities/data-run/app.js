@@ -2,14 +2,15 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const bank = window.DATA_RUN_QUESTIONS?.questions;
-  const typeNames = { life: '생활 속 데이터', concept: '데이터 개념', datatype: '수치형 · 범주형' };
+  const typeNames = { life: '생활 속 데이터 활용' };
   const themes = [
-    { key: 'cafeteria', icon: '🍽️', name: '급식실' },
-    { key: 'restroom', icon: '🫧', name: '화장실' },
-    { key: 'classroom', icon: '✏️', name: '교실' },
-    { key: 'library', icon: '📚', name: '도서관' },
-    { key: 'environment', icon: '🌳', name: '생활환경' }
+    { key: 'cafeteria', icon: '🍽️', name: '급식과 가게' },
+    { key: 'restroom', icon: '🫧', name: '이동과 날씨' },
+    { key: 'classroom', icon: '✏️', name: '학교생활' },
+    { key: 'library', icon: '📚', name: '도서관과 공원' },
+    { key: 'environment', icon: '🌳', name: '함께 쓰는 공간' }
   ];
+  let practice = false;
   let state = 'home', model, placeQuestions = {}, activeQuestion = null;
   let history = [], objects = [], animationId = 0, lastTime = 0, elapsed = 0, nextQuizAt = 20;
   let spawnIn = 1.2, worldOffset = 0, stageIndex = -1, stageQuizCount = 0, audio = null, invincible = 0, fallReason = '';
@@ -34,13 +35,14 @@
   function quizSound(correct) { (correct ? [523, 659, 784] : [220, 175]).forEach((n, i) => tone(n, .15, 'sine', .04, i * .09)); }
 
   function start() {
+    practice = false;
     initAudio();
     if ($('help-dialog').open) $('help-dialog').close();
     if ($('pause-dialog').open) $('pause-dialog').close();
     if ($('bonus-dialog').open) $('bonus-dialog').close();
     placeQuestions = DataRun.makePlaceBonusCourse(bank);
     history = []; objects = []; $('objects').replaceChildren();
-    model = new DataRun.RunnerModel(15, 1);
+    model = new DataRun.RunnerModel(bank.length, 1);
     Object.assign(player, { y: 0, vy: 0, grounded: true, jumps: 0, coyote: .09, falling: false });
     elapsed = worldOffset = 0; nextQuizAt = 15; spawnIn = 1.05; stageIndex = -1; stageQuizCount = 0; invincible = 0; fallReason = '';
     $('game').className = 'game-screen'; $('runner').style.transform = 'translateY(0)';
@@ -67,7 +69,7 @@
     const speed = getSpeed(), level = Math.min(4, Math.floor(elapsed / 60));
     updateTheme(level); updatePhysics(dt); moveWorld(dt, speed); moveObjects(dt, speed); maybeSpawn(dt, level);
     model.travel(speed * dt / 25); updateHud();
-    if (!model.done && stageQuizCount < 3 && elapsed >= nextQuizAt && player.grounded && !nearGap()) openBonus();
+    if (!model.done && stageQuizCount < placeQuestions[themes[stageIndex].key].length && elapsed >= nextQuizAt && player.grounded && !nearGap()) openBonus();
     if (state === 'running') animationId = requestAnimationFrame(frame);
   }
   function updatePhysics(dt) {
@@ -165,11 +167,15 @@
   }
 
   function openBonus() {
-    const placeKey = themes[stageIndex].key;
-    activeQuestion = placeQuestions[placeKey][stageQuizCount];
-    if (!activeQuestion) return;
-    state = 'quiz'; cancelAnimationFrame(animationId); stageQuizCount++;
-    $('bonus-number').textContent = `보너스 문제 ${history.length + 1}`; $('question-kind').textContent = typeNames[activeQuestion.type];
+    const question = placeQuestions[themes[stageIndex].key][stageQuizCount];
+    if (!question) return;
+    stageQuizCount++;
+    showBonusQuestion(question);
+  }
+  function showBonusQuestion(question) {
+    activeQuestion = question;
+    state = 'quiz'; cancelAnimationFrame(animationId);
+    $('bonus-number').textContent = `생활 사례 ${history.length + 1} / ${bank.length} · ${activeQuestion.title}`; $('question-kind').textContent = typeNames[activeQuestion.type];
     $('question').textContent = activeQuestion.question; $('prompt').textContent = activeQuestion.prompt || '생활 속 문제를 해결하려면 어떤 데이터가 필요할까요?';
     $('choices').replaceChildren(); $('feedback').hidden = true; $('feedback').className = 'feedback';
     activeQuestion.choices.forEach((choice, i) => { const button = document.createElement('button'); button.className = 'choice'; button.innerHTML = `<span class="choice-number">${i + 1}</span><span>${choice}</span>`; button.addEventListener('click', () => answerBonus(i)); $('choices').append(button); });
@@ -183,11 +189,14 @@
     $('feedback').hidden = false; $('feedback').classList.toggle('wrong', !correct);
     $('feedback-title').textContent = correct ? `정답! 데이터 코인 +${reward}` : '아쉬워요! 데이터 코인 -20';
     $('feedback-text').textContent = (correct ? '' : `정답은 ‘${activeQuestion.choices[activeQuestion.answer]}’이에요. `) + activeQuestion.explanation;
-    quizSound(correct); updateHud(); $('continue').focus();
+    quizSound(correct); updateHud(); $('continue').textContent = practice ? (history.length === bank.length ? '결과 보기 →' : '다음 생활 사례 →') : '계속 달리기 ▶'; $('continue').focus();
   }
   function continueRun() {
     if (state !== 'quiz' || $('feedback').hidden) return;
-    $('bonus-dialog').close(); nextQuizAt = stageQuizCount < 3 ? Math.floor(elapsed / 60) * 60 + 15 * (stageQuizCount + 1) : Infinity; state = 'running'; lastTime = performance.now(); animationId = requestAnimationFrame(frame);
+    $('bonus-dialog').close();
+    if (history.length >= bank.length) { fallReason = '생활 속 데이터 활용 사례 12개를 모두 살펴봤어요!'; finish(); return; }
+    if (practice) { showBonusQuestion(bank[history.length]); return; }
+    nextQuizAt = stageQuizCount < placeQuestions[themes[stageIndex].key].length ? Math.floor(elapsed / 60) * 60 + 15 * (stageQuizCount + 1) : Infinity; state = 'running'; lastTime = performance.now(); animationId = requestAnimationFrame(frame);
   }
 
   function triggerFall(reason) {
@@ -196,7 +205,7 @@
   }
   function finish() {
     state = 'results'; showScreen('results');
-    $('results-title').textContent = '이번 달리기 종료!'; $('result-message').textContent = fallReason;
+    $('results-title').textContent = practice ? '생활 사례 탐험 완료!' : '이번 달리기 종료!'; $('result-message').textContent = fallReason;
     $('result-score').textContent = model.score.toLocaleString(); $('result-coins').textContent = model.coins; $('result-correct').textContent = `${model.bonusCorrect} / ${model.bonusAnswered}`; $('result-distance').textContent = `${Math.floor(model.distance)}m`; renderReview();
   }
   function renderReview() {
@@ -209,6 +218,13 @@
   function resume() { if (state !== 'paused') return; $('pause-dialog').close(); $('game').classList.remove('paused'); state = 'running'; lastTime = performance.now(); animationId = requestAnimationFrame(frame); }
   function goHome() { state = 'home'; cancelAnimationFrame(animationId); ['help-dialog','bonus-dialog','pause-dialog'].forEach(id => { if ($(id).open) $(id).close(); }); showScreen('home'); }
 
+  function startPractice() {
+    initAudio(); practice = true; cancelAnimationFrame(animationId);
+    ['help-dialog','bonus-dialog','pause-dialog'].forEach(id => { if ($(id).open) $(id).close(); });
+    model = new DataRun.RunnerModel(bank.length, 1); history = []; objects = []; elapsed = 0; stageIndex = -1; stageQuizCount = 0; fallReason = '';
+    $('objects').replaceChildren(); placeQuestions = DataRun.makePlaceBonusCourse(bank); updateTheme(0); updateHud(); showScreen('game'); showBonusQuestion(bank[0]);
+  }
+  $('practice-start').addEventListener('click', startPractice);
   $('start').addEventListener('click', start); $('help').addEventListener('click', () => $('help-dialog').showModal()); $('close-help').addEventListener('click', () => $('help-dialog').close()); $('help-start').addEventListener('click', start);
   $('jump').addEventListener('pointerdown', event => { event.preventDefault(); event.stopPropagation(); jump(); }); $('scene').addEventListener('pointerdown', event => { if (!event.target.closest('button')) jump(); });
   $('continue').addEventListener('click', continueRun); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume); $('home-button').addEventListener('click', goHome); $('pause-home').addEventListener('click', goHome); $('result-home').addEventListener('click', goHome); $('replay').addEventListener('click', start);

@@ -20,6 +20,7 @@
   }
   function makeCourse(bank, mode, random = Math.random) {
     validate(bank);
+    if (bank.every(q => q.type === 'life')) return mode === 'short' ? shuffle(bank, random).slice(0, 6) : bank.slice();
     if (mode === 'datatype') return bank.filter(q => q.type === 'datatype');
     if (mode === 'short') return shuffle([
       ...shuffle(bank.filter(q => q.type === 'life'), random).slice(0, 4),
@@ -30,6 +31,7 @@
   }
   function makeBonusCourse(bank, mode, random = Math.random) {
     validate(bank);
+    if (bank.every(q => q.type === 'life')) return shuffle(bank, random).slice(0, mode === 'short' ? 6 : bank.length);
     if (mode === 'datatype') return shuffle(bank.filter(q => q.type === 'datatype'), random);
     if (mode === 'short') return shuffle([
       ...shuffle(bank.filter(q => q.type === 'life'), random).slice(0, 2),
@@ -40,9 +42,9 @@
   }
   function makePlaceBonusCourse(bank, random = Math.random) {
     validate(bank);
-    const course = Object.fromEntries(placeKeys.map(key => [key, shuffle(bank.filter(q => q.placeKey === key), random).slice(0, 3)]));
+    const course = Object.fromEntries(placeKeys.map(key => [key, shuffle(bank.filter(q => q.placeKey === key), random)]));
     const selected = Object.values(course).flat();
-    if (selected.length !== 15 || new Set(selected.map(q => q.id)).size !== 15 || placeKeys.some(key => course[key].length !== 3)) {
+    if (selected.length !== bank.length || new Set(selected.map(q => q.id)).size !== bank.length || placeKeys.some(key => course[key].length === 0)) {
       throw new Error('장소별 보너스 문제를 만들 수 없습니다.');
     }
     return course;

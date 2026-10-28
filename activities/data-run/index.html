@@ -7,7 +7,7 @@
   <meta name="description" content="로봇과 직접 달리고 점프하며 보너스 데이터 문제를 푸는 학교 러닝 게임">
   <title>데이터 런 — 점프! 달리기! 데이터!</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=tablet-2"><link rel="stylesheet" href="runner-extra.css?v=tablet-2">
+  <link rel="stylesheet" href="style.css?v=tablet-2"><link rel="stylesheet" href="runner-extra.css?v=life12-1">
   <link rel="preload" href="assets/start-screen.png" as="image">
 <link rel="stylesheet" href="../../tablet-activities.css?v=tablet-2"></head>
 <body>
@@ -21,8 +21,8 @@
       <span class="hero-badge">달리고 · 점프하고 · 문제 풀기!</span>
     </div>
     <div class="home-panel">
-      <div><span class="eyebrow">RUN · JUMP · LEARN</span><h2>직접 점프하며 데이터 코인을 모아요!</h2><p>장애물을 뛰어넘고, 장소마다 서로 다른 보너스 문제 3개를 맞혀 높은 점수를 만들어 보세요.</p></div>
-      <p class="home-tip"><kbd>SPACE</kbd> 또는 <b>점프 버튼</b> · 소리 없이도 플레이 가능</p>
+      <div><span class="eyebrow">RUN · JUMP · LEARN</span><h2>직접 점프하며 데이터 코인을 모아요!</h2><p>장애물을 뛰어넘으며 생활 속 데이터 활용 문제 12개를 만나고, 정답 해설로 데이터의 의미를 알아보세요.</p></div>
+      <button id="practice-start" class="primary">생활 사례 12문제 바로 풀기 →</button><p class="home-tip"><kbd>SPACE</kbd> 또는 <b>점프 버튼</b> · 소리 없이도 플레이 가능</p>
     </div>
   </section>
 
@@ -60,14 +60,14 @@
     <div class="result-score"><small>최종 점수</small><b id="result-score">0</b></div>
     <div class="result-stats"><div><span>모은 코인</span><b id="result-coins">0</b></div><div><span>보너스 정답</span><b id="result-correct">0 / 0</b></div><div><span>달린 거리</span><b id="result-distance">0m</b></div></div>
     <div class="result-actions"><button id="replay" class="primary">↻ 다시 플레이</button><button id="result-home" class="secondary">시작 화면</button></div>
-    <div id="review" class="review"></div>
+    <p><a class="primary next-learning" href="../../#/5/2" target="_top">다음 활동 · 한 문장 정리와 자기평가 →</a></p><div id="review" class="review"></div>
   </section>
 </main>
 
 <dialog id="help-dialog" class="modal">
   <button class="close" id="close-help" aria-label="게임 방법 닫기">×</button><span class="eyebrow">HOW TO PLAY</span><h2>달리기는 이렇게 해요!</h2>
   <ol class="howto"><li><span>1</span><div><b>캐릭터는 자동으로 달려요</b><p>길 위의 데이터 코인에 닿으면 점수가 올라가요.</p></div></li><li><span>2</span><div><b>점프해서 장애물을 넘어요</b><p>화면·점프 버튼을 클릭하거나 <kbd>SPACE</kbd>·<kbd>↑</kbd>를 눌러요. 공중에서 한 번 더 누르면 2단 점프!</p></div></li><li><span>3</span><div><b>보너스 문제를 맞혀요</b><p>달리다 문제가 나오면 알맞은 답을 골라 코인 20~50개를 받아요.</p></div></li></ol>
-  <div class="learning-tip"><b>수치형 데이터</b>는 숫자로 나타낼 수 있고, <b>범주형 데이터</b>는 종류로 나뉘어요.</div><button id="help-start" class="primary wide">알겠어요! 달리기 시작 ▶</button>
+  <div class="learning-tip">버스 도착 안내, 날씨 예보, 급식과 도서관 등에서 데이터가 생활을 어떻게 바꾸는지 알아봐요. 문제의 수치와 상황은 학습용 가상 예시예요.</div><button id="help-start" class="primary wide">알겠어요! 달리기 시작 ▶</button>
 </dialog>
 
 <dialog id="bonus-dialog" class="modal bonus-modal">
@@ -78,6 +78,6 @@
 
 <dialog id="pause-dialog" class="modal pause-modal"><div class="pause-symbol">Ⅱ</div><h2>잠깐 쉬어 가요</h2><p>준비되면 다시 달려요.</p><button id="resume" class="primary wide">계속 달리기 ▶</button><button id="pause-home" class="text-btn wide">시작 화면으로</button></dialog>
 
-<script src="questions.js"></script><script src="game-core.js?v=14"></script><script src="app.js?v=14"></script>
+<script src="questions.js?v=life12-1"></script><script src="game-core.js?v=life12-1"></script><script src="app.js?v=life12-1"></script>
 </body>
 </html>
