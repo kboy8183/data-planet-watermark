@@ -42,7 +42,7 @@
     if ($('bonus-dialog').open) $('bonus-dialog').close();
     placeQuestions = DataRun.makePlaceBonusCourse(bank);
     history = []; objects = []; $('objects').replaceChildren();
-    model = new DataRun.RunnerModel(bank.length, 1);
+    model = new DataRun.RunnerModel(bank.length, 5);
     Object.assign(player, { y: 0, vy: 0, grounded: true, jumps: 0, coyote: .09, falling: false });
     elapsed = worldOffset = 0; nextQuizAt = 15; spawnIn = 1.05; stageIndex = -1; stageQuizCount = 0; invincible = 0; fallReason = '';
     $('game').className = 'game-screen'; $('runner').style.transform = 'translateY(0)';
@@ -83,7 +83,14 @@
       const gravity = player.vy > 0 ? 1750 : 2550;
       player.vy -= gravity * dt; player.y += player.vy * dt;
       if (player.y <= 0 && !over && !player.falling) { player.y = 0; player.vy = 0; player.grounded = true; player.jumps = 0; }
-      if (player.y < -220) { triggerFall('낭떠러지에 빠졌어요. 다음에는 점프 타이밍을 조금 앞당겨 보세요!'); return; }
+      if (player.y < -220) {
+        model.hitObstacle(); updateHud();
+        if (model.hearts <= 0) { triggerFall('체력 5개를 모두 사용해 달리기가 끝났어요.'); return; }
+        objects.forEach(obj => obj.el.remove()); objects = []; spawnIn = 1.5;
+        Object.assign(player, { y: 0, vy: 0, grounded: true, jumps: 0, coyote: .09, falling: false });
+        invincible = 1.5;
+        $('scene-message').textContent = '체력 1개를 사용했어요. 다시 달려 볼까요?';
+      }
     }
     $('runner').style.transform = `translateY(${-player.y}px)`;
     $('runner').classList.toggle('airborne', !player.grounded);
@@ -137,7 +144,7 @@
     obj.hit = true; if (invincible > 0) return; invincible = 1.25; model.hitObstacle(); hitSound();
     $('game').classList.add('shake'); $('runner').classList.add('hit'); setTimeout(() => { $('game').classList.remove('shake'); $('runner').classList.remove('hit'); }, 560);
     $('scene-message').textContent = model.hearts > 0 ? '괜찮아요! 다음 장애물은 점프로 피해요.' : '체력이 모두 닳아 균형을 잃었어요!';
-    if (model.hearts <= 0) triggerFall('장애물에 한 번 부딪혀 달리기가 끝났어요.');
+    if (model.hearts <= 0) triggerFall('체력 5개를 모두 사용해 달리기가 끝났어요.');
   }
   function overGap() {
     const runnerX = $('scene').clientWidth * (innerWidth <= 760 ? .08 : .18) + 45;
@@ -221,7 +228,7 @@
   function startPractice() {
     initAudio(); practice = true; cancelAnimationFrame(animationId);
     ['help-dialog','bonus-dialog','pause-dialog'].forEach(id => { if ($(id).open) $(id).close(); });
-    model = new DataRun.RunnerModel(bank.length, 1); history = []; objects = []; elapsed = 0; stageIndex = -1; stageQuizCount = 0; fallReason = '';
+    model = new DataRun.RunnerModel(bank.length, 5); history = []; objects = []; elapsed = 0; stageIndex = -1; stageQuizCount = 0; fallReason = '';
     $('objects').replaceChildren(); placeQuestions = DataRun.makePlaceBonusCourse(bank); updateTheme(0); updateHud(); showScreen('game'); showBonusQuestion(bank[0]);
   }
   $('practice-start').addEventListener('click', startPractice);
