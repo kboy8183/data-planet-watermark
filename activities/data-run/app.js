@@ -4,11 +4,11 @@
   const bank = window.DATA_RUN_QUESTIONS?.questions;
   const typeNames = { life: '생활 속 데이터 활용' };
   const themes = [
-    { key: 'cafeteria', icon: '🍽️', name: '급식과 가게' },
-    { key: 'restroom', icon: '🫧', name: '이동과 날씨' },
-    { key: 'classroom', icon: '✏️', name: '학교생활' },
-    { key: 'library', icon: '📚', name: '도서관과 공원' },
-    { key: 'environment', icon: '🌳', name: '함께 쓰는 공간' }
+    { key: 'cafeteria', icon: '🍽️', name: '급식실' },
+    { key: 'restroom', icon: '🫧', name: '화장실' },
+    { key: 'classroom', icon: '✏️', name: '교실' },
+    { key: 'library', icon: '📚', name: '도서관' },
+    { key: 'environment', icon: '🌳', name: '운동장' }
   ];
   let practice = false;
   let state = 'home', model, placeQuestions = {}, activeQuestion = null;

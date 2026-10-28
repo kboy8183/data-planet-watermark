@@ -20,3 +20,7 @@
 @media(max-width:1100px),(pointer:coarse){.game-screen{height:calc(100 * var(--tablet-vh, 1vh));min-height:420px}.scene{min-height:0}.game-header{height:58px;min-height:58px;gap:8px;padding:0 12px}.runner-guide{flex:none}.jump-button{width:84px;min-height:84px;right:3%;bottom:8%;touch-action:none}.scene{touch-action:manipulation}.hud{gap:6px}.hud-cell{min-width:48px}.game-header .brand{font-size:20px}.modal{padding:20px}.bonus-choices button{min-height:48px}}
 @media(max-height:550px) and (min-width:700px){.runner{width:110px}.game-header{height:50px;min-height:50px}.jump-button{width:72px;min-height:72px}.runner-guide{font-size:11px;padding:8px}.theme-banner{top:8px;padding:5px 10px}.scene-message{font-size:14px}}
 #practice-start{min-height:48px;padding:12px 20px;white-space:normal}.home-panel{row-gap:14px}.next-learning{display:inline-flex;align-items:center;justify-content:center;padding:15px 22px;text-decoration:none;border-radius:14px;min-height:48px}.feedback-text,#feedback-text{line-height:1.9}.bonus-number{line-height:1.7}
+
+/* A dedicated transparent pose avoids noisy sprite-sheet edges during jumps. */
+.runner.airborne .robot{background-image:url('assets/robot-jump-clean.png');background-size:contain;background-position:center;background-repeat:no-repeat;animation:none;transform:rotate(-4deg);filter:none}
+.runner.airborne::before,.runner.airborne::after{content:none}
