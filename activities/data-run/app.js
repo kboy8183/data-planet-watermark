@@ -76,13 +76,13 @@
     const over = overGap();
     if (player.grounded && !over) player.coyote = .09;
     else player.coyote = Math.max(0, player.coyote - dt);
-    if (over && player.y <= 1 && !player.falling) {
+    if (over && player.y <= 0 && player.vy <= 0 && !player.falling) {
       player.grounded = false; player.falling = true; player.vy = Math.min(player.vy, 0);
     }
     if (!player.grounded) {
       const gravity = player.vy > 0 ? 1750 : 2550;
       player.vy -= gravity * dt; player.y += player.vy * dt;
-      if (player.y <= 0 && !over && !player.falling) { player.y = 0; player.vy = 0; player.grounded = true; player.jumps = 0; }
+      if (player.y <= 0 && !over) { player.y = 0; player.vy = 0; player.grounded = true; player.jumps = 0; player.falling = false; }
       if (player.y < -220) {
         model.hitObstacle(); updateHud();
         if (model.hearts <= 0) { triggerFall('체력 5개를 모두 사용해 달리기가 끝났어요.'); return; }
@@ -121,6 +121,7 @@
   }
   function spawnObject(kind, x, height, width, collectible = true) {
     const el = document.createElement('div'); el.className = `game-object ${kind}`;
+    el.style.left = '0px'; el.style.transform = `translateX(${x}px)`;
     el.style.width = width + 'px'; if (height) el.style.bottom = `calc(18% + ${height}px)`;
     $('objects').append(el); objects.push({ el, type: kind.split(' ')[0], high: kind.includes('high'), x, height, width, collected: false, hit: false, collectible });
   }
@@ -147,8 +148,10 @@
     if (model.hearts <= 0) triggerFall('체력 5개를 모두 사용해 달리기가 끝났어요.');
   }
   function overGap() {
-    const runnerX = $('scene').clientWidth * (innerWidth <= 760 ? .08 : .18) + 45;
-    return objects.some(o => o.type === 'gap' && o.x < runnerX + 52 && o.x + o.width > runnerX);
+    const runner = $('runner');
+    const foot = runner.offsetLeft + runner.offsetWidth * .5;
+    const halfFoot = runner.offsetWidth * .10;
+    return objects.some(o => o.type === 'gap' && o.x < foot - halfFoot && o.x + o.width > foot + halfFoot);
   }
   function nearGap() {
     const runnerX = $('scene').clientWidth * (innerWidth <= 760 ? .08 : .18);

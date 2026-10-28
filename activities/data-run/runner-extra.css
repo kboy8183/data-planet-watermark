@@ -24,3 +24,8 @@
 /* A dedicated transparent pose avoids noisy sprite-sheet edges during jumps. */
 .runner.airborne .robot{background-image:url('assets/robot-jump-clean.png');background-size:contain;background-position:center;background-repeat:no-repeat;animation:none;transform:rotate(-4deg);filter:none}
 .runner.airborne::before,.runner.airborne::after{content:none}
+
+/* Preserve the physics transform while showing collision feedback. */
+.runner.hit{animation:none}
+.runner.hit .robot{animation:robot-hit-flash .15s steps(2,end) infinite}
+@keyframes robot-hit-flash{50%{opacity:.35}}
