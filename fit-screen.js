@@ -7,8 +7,23 @@
   const host=document.getElementById('activity-host');let clean=null,queued=0;
   function attach(frame){
     clean?.();let doc;try{doc=frame.contentDocument;if(!doc?.body||doc.URL==='about:blank')return;}catch{return;}
+    // Keep the original scrolling lesson and the real-time game in a native viewport.
+    if (/data-world-lesson2|data-run/.test(frame.src)) {
+      frame.style.cssText='position:absolute;inset:0;width:100%;height:100%;transform:none;border:0;min-height:0';
+      frame.dataset.fitScale='1.0000';frame.dataset.device=mode;
+      const runner=/data-run/.test(frame.src);
+      const resize=()=>{if(!frame.isConnected)return;doc.documentElement.style.setProperty('--fit-height',host.clientHeight+'px');doc.documentElement.style.setProperty('--tablet-vh',(host.clientHeight/100)+'px');};
+      if(runner){
+        doc.body.dataset.screenDevice=mode;
+        const style=doc.createElement('style');style.textContent='html,body{margin:0;overflow:hidden}.game-screen{height:var(--fit-height)!important;min-height:0!important}html:has(#results:not([hidden])){overflow-y:auto}';doc.head.append(style);
+        const layout=doc.createElement('link');layout.rel='stylesheet';layout.href='../../device-layout.css?v=repair-2';doc.head.append(layout);
+      }
+      frame.addEventListener('fit-viewport',resize);window.addEventListener('resize',resize);resize();
+      clean=()=>{frame.removeEventListener('fit-viewport',resize);window.removeEventListener('resize',resize);};
+      return;
+    }
     let running=false,disposed=false;const stops=[];
-    const style=doc.createElement('style');style.textContent='html{overflow:hidden!important}body{overflow-x:hidden!important}.game-screen{height:var(--fit-height)!important;min-height:0!important}';doc.head.append(style);doc.body.dataset.screenDevice=mode;const layout=doc.createElement('link');layout.rel='stylesheet';layout.href='../../device-layout.css?v=2';layout.onload=()=>schedule();doc.head.append(layout);
+    const style=doc.createElement('style');style.textContent='html{overflow:hidden!important}body{overflow-x:hidden!important}.game-screen{height:var(--fit-height)!important;min-height:0!important}';doc.head.append(style);doc.body.dataset.screenDevice=mode;const layout=doc.createElement('link');layout.rel='stylesheet';layout.href='../../device-layout.css?v=repair-2';layout.onload=()=>schedule();doc.head.append(layout);
     function fit(){
       if(disposed||running||!frame.isConnected||!host.clientWidth||!host.clientHeight)return;running=true;
       const compact=/data-run|learning-summary/.test(frame.src);const w=mode==='tablet'?Math.max(768,host.clientWidth):Math.max(compact?960:1280,Math.min(1600,host.clientWidth)),base=Math.max(480,host.clientHeight);

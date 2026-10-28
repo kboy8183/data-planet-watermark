@@ -231,7 +231,7 @@
     model = new DataRun.RunnerModel(bank.length, 5); history = []; objects = []; elapsed = 0; stageIndex = -1; stageQuizCount = 0; fallReason = '';
     $('objects').replaceChildren(); placeQuestions = DataRun.makePlaceBonusCourse(bank); updateTheme(0); updateHud(); showScreen('game'); showBonusQuestion(bank[0]);
   }
-  $('practice-start').addEventListener('click', startPractice);
+  $('launch-run').addEventListener('click', start); $('practice-start').addEventListener('click', startPractice);
   $('start').addEventListener('click', start); $('help').addEventListener('click', () => $('help-dialog').showModal()); $('close-help').addEventListener('click', () => $('help-dialog').close()); $('help-start').addEventListener('click', start);
   $('jump').addEventListener('pointerdown', event => { event.preventDefault(); event.stopPropagation(); jump(); }); $('scene').addEventListener('pointerdown', event => { if (!event.target.closest('button')) jump(); });
   $('continue').addEventListener('click', continueRun); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume); $('home-button').addEventListener('click', goHome); $('pause-home').addEventListener('click', goHome); $('result-home').addEventListener('click', goHome); $('replay').addEventListener('click', start);
