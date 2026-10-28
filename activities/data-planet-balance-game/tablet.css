@@ -1,7 +1,7 @@
 /* Fill the available tablet viewport rather than shrinking into a 16:9 letterbox. */
 @media(max-width:1100px),(pointer:coarse){
   html,body{overflow:auto;min-height:100%;height:auto}
-  #stage{width:100vw;height:100dvh;min-height:460px}
+  #stage{width:100vw;height:calc(100 * var(--tablet-vh, 1vh));min-height:460px}
   .game-top{height:52px;font-size:16px;gap:12px;padding:4px 12px}
   .icon{width:44px;height:44px;min-height:44px;font-size:24px;flex:none}
   #progress{font-size:14px}
@@ -21,7 +21,7 @@
   .candidate p{font-size:14px;line-height:1.6;padding:0 10px;margin:8px 0 12px;min-height:0}
   .badges{height:auto;min-height:32px;flex-wrap:wrap;gap:4px;padding:4px}
   .badge{font-size:12px;padding:4px 7px}
-  .candidate .cloud span{font-size:clamp(10px,calc(var(--word-size) * .48cqw),30px)!important}
+  .candidate .cloud span{font-size:clamp(10px,calc(var(--word-size) * calc(.48 * var(--chart-cqw, 1vw))),30px)!important}
   .candidate .pict{font-size:12px}
   .candidate .pict-label{width:48px}
   .candidate .pict-row{margin:3px 0;gap:4px}
@@ -42,8 +42,8 @@
 @media(max-aspect-ratio:6/5) and (max-width:1100px){
   #stage{min-height:720px}
   .home-copy{left:7%;top:15%;width:86%}
-  .home h1{font-size:8cqw}.home h1 span{font-size:10cqw}
-  .subtitle{font-size:3.4cqw;line-height:1.5}.chapter{font-size:3cqw}
+  .home h1{font-size:calc(8 * var(--chart-cqw, 1vw))}.home h1 span{font-size:calc(10 * var(--chart-cqw, 1vw))}
+  .subtitle{font-size:calc(3.4 * var(--chart-cqw, 1vw));line-height:1.5}.chapter{font-size:calc(3 * var(--chart-cqw, 1vw))}
   .home-actions{left:8%;width:84%;bottom:12%;gap:18px}
   .intro{padding:24px}.intro h2{font-size:28px;margin:12px 0 28px}
   .instructions{width:100%;gap:10px}.instructions>div{width:33.33%;padding:18px 4px}
@@ -62,4 +62,4 @@
   .reason-layout .reason-screen textarea{height:120px}
   .result-actions{flex-wrap:wrap;justify-content:center}
 }
-body.tablet-expanded{overflow:hidden}body.tablet-expanded #stage{position:fixed;inset:0;z-index:100;width:100vw;height:100dvh;min-height:0}
+body.tablet-expanded{overflow:hidden}body.tablet-expanded #stage{position:fixed;inset:0;z-index:100;width:100vw;height:calc(100 * var(--tablet-vh, 1vh));min-height:0}

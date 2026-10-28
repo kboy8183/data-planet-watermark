@@ -7,3 +7,4 @@ button,a,summary{touch-action:manipulation}
   textarea,input{font-size:16px}
   dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;-webkit-overflow-scrolling:touch}
 }
+.tablet-dialog-backdrop{position:fixed;inset:0;background:#08031bbd;z-index:9998}.tablet-dialog-fallback[open]{display:block;position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);margin:0;z-index:9999;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);overflow:auto}dialog:not([open]){display:none}
