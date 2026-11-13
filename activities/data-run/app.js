@@ -67,7 +67,9 @@
     const dt = Math.min(.033, Math.max(0, (now - lastTime) / 1000)); lastTime = now;
     elapsed += dt; invincible = Math.max(0, invincible - dt);
     const speed = getSpeed(), level = Math.min(4, Math.floor(elapsed / 60));
-    updateTheme(level); updatePhysics(dt); moveWorld(dt, speed); moveObjects(dt, speed); maybeSpawn(dt, level);
+    updateTheme(level); updatePhysics(dt);
+    if (state !== 'running') return;
+    moveWorld(dt, speed); moveObjects(dt, speed); maybeSpawn(dt, level);
     model.travel(speed * dt / 25); updateHud();
     if (!model.done && stageQuizCount < placeQuestions[themes[stageIndex].key].length && elapsed >= nextQuizAt && player.grounded && !nearGap()) openBonus();
     if (state === 'running') animationId = requestAnimationFrame(frame);
@@ -82,7 +84,8 @@
     if (!player.grounded) {
       const gravity = player.vy > 0 ? 1750 : 2550;
       player.vy -= gravity * dt; player.y += player.vy * dt;
-      if (player.y <= 0 && !over) { player.y = 0; player.vy = 0; player.grounded = true; player.jumps = 0; player.falling = false; }
+      // A runner below the floor cannot land on its underside when the gap moves away.
+      if (player.y <= 0 && !over && !player.falling) { player.y = 0; player.vy = 0; player.grounded = true; player.jumps = 0; player.falling = false; }
       if (player.y < -220) {
         model.hitObstacle(); updateHud();
         if (model.hearts <= 0) { triggerFall('체력 5개를 모두 사용해 달리기가 끝났어요.'); return; }
