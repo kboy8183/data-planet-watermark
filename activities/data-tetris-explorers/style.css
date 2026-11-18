@@ -82,3 +82,7 @@
 .board .piece-label{transform:translate(-50%,calc(-100% - 6px))}
 
 .game-layout>.well{align-self:stretch}
+
+/* Keep all eight columns and sixteen rows square at every viewport size. */
+.board{container-type:size}
+.board .grid,.board .pieces{width:min(100cqw,calc((100cqh - var(--piece-label-space))/2));height:min(200cqw,calc(100cqh - var(--piece-label-space)));left:50%;right:auto;transform:translateX(-50%)}
