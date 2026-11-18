@@ -80,3 +80,5 @@
 .board{--piece-label-space:64px}
 .board .grid,.board .pieces{top:var(--piece-label-space);height:calc(100% - var(--piece-label-space))}
 .board .piece-label{transform:translate(-50%,calc(-100% - 6px))}
+
+.game-layout>.well{align-self:stretch}
