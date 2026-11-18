@@ -75,3 +75,8 @@
  .arcade .control-deck .drop{height:54px;font-size:20px}
  .arcade .key-guide{margin:0}
 }
+
+/* Keep the falling piece visible, including when it spawns at the top. */
+.board{--piece-label-space:64px}
+.board .grid,.board .pieces{top:var(--piece-label-space);height:calc(100% - var(--piece-label-space))}
+.board .piece-label{transform:translate(-50%,calc(-100% - 6px))}
